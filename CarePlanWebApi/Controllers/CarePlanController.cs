@@ -59,9 +59,9 @@ namespace CarePlanWebApi.Controllers
         /// </summary>
         /// <returns>
         /// An Array with all the Care Plans
-        /// </returns>        
-		/// <response code="200">Care plans retreived.</response>
-		/// <response code="500">An unexpected error occurs.</response>
+        /// </returns>
+        /// <response code="200">Care plans retreived.</response>
+        /// <response code="500">An unexpected error occurs.</response>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ApiCarePlan>), 200)]
         [ProducesResponseType(typeof(InternalServerError), 500)]
@@ -89,9 +89,9 @@ namespace CarePlanWebApi.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         /// <response code="200">Care plan result created.</response>
-		/// <response code="400">The Id specified is not valid.</response>
+        /// <response code="400">The Id specified is not valid.</response>
         /// <response code="404">No care plan found with the specified Id.</response>
-		/// <response code="500">An unexpected error occurs.</response>
+        /// <response code="500">An unexpected error occurs.</response>
         [HttpGet("{id}", Name = "GetCarePlan")]
         [ProducesResponseType(typeof(ApiCarePlan), 200)]
         [ProducesResponseType(typeof(BadRequestError), 400)]
@@ -215,7 +215,7 @@ namespace CarePlanWebApi.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         /// <response code="204">Care plan deleted.</response>
-		/// <response code="400">The Id specified is not valid.</response>
+        /// <response code="400">The Id specified is not valid.</response>
         /// <response code="404">No care plan with the specified Id.</response>
         /// <response code="500">There was an error creating the care plan.</response>
         [HttpDelete("{id}")]
