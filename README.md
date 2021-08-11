@@ -22,7 +22,7 @@ Class & Rules
 Care Plan
 
 Field	Type	Mandatory	Rules
-Title	Nvarchar(450)	Yes	
+Title	Nvarchar(450)	Yes
 Patient Name	Nvarchar(450)	Yes	
 User Name	Nvarchar(450)	Yes	
 Actual Start Date/Time	Date/Time	Yes	
