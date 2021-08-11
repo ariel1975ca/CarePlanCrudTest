@@ -1,0 +1,2 @@
+﻿
+Scaffold-DbContext "Data Source=.;Initial Catalog=CarePlanDB;Persist Security Info=True;User ID=careplanuser;Password=careplanpassword;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force -Context CarePlanDBContext -NoOnConfiguring -NoPluralize

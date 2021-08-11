@@ -1,0 +1,486 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CarePlanWebApi</name>
+    </assembly>
+    <members>
+        <member name="T:CarePlanWebApi.Controllers.CarePlanController">
+            <summary>
+              Handle the API interactions with the Care Plans
+            </summary>
+        </member>
+        <member name="F:CarePlanWebApi.Controllers.CarePlanController._logger">
+            <summary>
+            The logger
+            </summary>
+        </member>
+        <member name="F:CarePlanWebApi.Controllers.CarePlanController._carePlanService">
+            <summary>
+            The care plan service
+            </summary>
+        </member>
+        <member name="M:CarePlanWebApi.Controllers.CarePlanController.#ctor(CarePlanWebApi.Services.CarePlanService,Microsoft.Extensions.Logging.ILogger{CarePlanWebApi.Controllers.CarePlanController})">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarePlanWebApi.Controllers.CarePlanController" /> class.
+            </summary>
+            <param name="carePlanService">The care plan service.</param>
+            <param name="logger">The logger.</param>
+        </member>
+        <member name="M:CarePlanWebApi.Controllers.CarePlanController.Get">
+            <summary>
+            Gets all the care plans.
+            </summary>
+            <returns>
+            An Array with all the Care Plans
+            </returns>        
+            <response code="200">Care plans retreived.</response>
+            <response code="500">An unexpected error occurs.</response>
+        </member>
+        <member name="M:CarePlanWebApi.Controllers.CarePlanController.GetCarePlan(System.Int32)">
+            <summary>
+            Gets the care plan by its identifier.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+            <response code="200">Care plan result created.</response>
+            <response code="400">The Id specified is not valid.</response>
+            <response code="404">No care plan found with the specified Id.</response>
+            <response code="500">An unexpected error occurs.</response>
+        </member>
+        <member name="M:CarePlanWebApi.Controllers.CarePlanController.CreateCarePlan(CarePlanWebApi.Models.ApiCarePlan)">
+            <summary>
+            Create the specified care plan.
+            </summary>
+            <param name="carePlan">The care plan to create.</param>
+            <response code="201">Care plan created on the server.</response>
+            <response code="400">No care plan specified or not valid.</response>
+            <response code="500">There was an error creating the care plan.</response>
+        </member>
+        <member name="M:CarePlanWebApi.Controllers.CarePlanController.UpdateCarePlan(System.Int32,CarePlanWebApi.Models.ApiCarePlan)">
+            <summary>
+            Update the specified care plan.
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="carePlan">The care plan to update.</param>
+            <returns></returns>
+            <response code="202">Care plan updated.</response>
+            <response code="400">No care plan to update or not valid.</response>
+            <response code="404">No care plan found with the specified Id.</response>
+            <response code="500">There was an error creating the care plan.</response>
+        </member>
+        <member name="M:CarePlanWebApi.Controllers.CarePlanController.DeleteCarePlan(System.Int32)">
+            <summary>
+            Deletes the specified care plan by its identifier.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+            <response code="204">Care plan deleted.</response>
+            <response code="400">The Id specified is not valid.</response>
+            <response code="404">No care plan with the specified Id.</response>
+            <response code="500">There was an error creating the care plan.</response>
+        </member>
+        <member name="T:CarePlanWebApi.Helpers.ApiModelHelper">
+            <summary>
+            Manage the transformation from DB entities to Api models
+            </summary>
+        </member>
+        <member name="M:CarePlanWebApi.Helpers.ApiModelHelper.GetApiCarePlanFromDb(CarePlanWebApi.DataLayer.Models.TcarePlan)">
+            <summary>
+            Gets the API care plan from database.
+            </summary>
+            <param name="entity">The entity.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CarePlanWebApi.Helpers.ApiModelHelper.GetTCarePlanFromModel(CarePlanWebApi.Models.ApiCarePlan)">
+            <summary>
+            Gets the t care plan from model.
+            </summary>
+            <param name="model">The model.</param>
+            <returns></returns>
+        </member>
+        <member name="T:CarePlanWebApi.Models.ApiCarePlan">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiCarePlan.Id">
+            <summary>
+            Gets or sets the care plan identifier. [Required]
+            </summary>
+            <value>
+            The care plan identifier.
+            </value>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiCarePlan.Title">
+            <summary>
+            Gets or sets the title. [Required, Max: 450 chars]
+            </summary>
+            <value>
+            The title.
+            </value>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiCarePlan.PatientName">
+            <summary>
+            Gets or sets the name of the patient. [Required, Max: 450 chars]
+            </summary>
+            <value>
+            The name of the patient.
+            </value>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiCarePlan.UserName">
+            <summary>
+            Gets or sets the name of the user. [Required, Max: 450 chars]
+            </summary>
+            <value>
+            The name of the user.
+            </value>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiCarePlan.ActualStartDate">
+            <summary>
+            Gets or sets the actual start date. [Required]
+            </summary>
+            <value>
+            The actual start date.
+            </value>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiCarePlan.TargetDate">
+            <summary>
+            Gets or sets the target date. [Required]
+            </summary>
+            <value>
+            The target date.
+            </value>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiCarePlan.Reason">
+            <summary>
+            Gets or sets the reason. [Required, Max: 1000 chars]
+            </summary>
+            <value>
+            The reason.
+            </value>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiCarePlan.Action">
+            <summary>
+            Gets or sets the action. [Required, Max: 1000 chars]
+            </summary>
+            <value>
+            The action.
+            </value>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiCarePlan.Completed">
+            <summary>
+            Gets or sets the completed.
+            </summary>
+            <value>
+            The completed.
+            </value>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiCarePlan.EndDate">
+            <summary>
+            Gets or sets the end date.
+            </summary>
+            <value>
+            The end date.
+            </value>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiCarePlan.Outcome">
+            <summary>
+            Gets or sets the outcome. [Max: 1000 chars]
+            </summary>
+            <value>
+            The outcome.
+            </value>
+        </member>
+        <member name="T:CarePlanWebApi.Models.ApiError">
+            <summary>
+             Base class for the Api error types
+            </summary>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiError.StatusCode">
+            <summary>
+            Gets the status code.
+            </summary>
+            <value>
+            The status code.
+            </value>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiError.StatusDescription">
+            <summary>
+            Gets the status description.
+            </summary>
+            <value>
+            The status description.
+            </value>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiError.ErrorMessage">
+            <summary>
+            Gets the message.
+            </summary>
+            <value>
+            The message.
+            </value>
+        </member>
+        <member name="M:CarePlanWebApi.Models.ApiError.#ctor(System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.ApiError"/> class.
+            </summary>
+            <param name="statusCode">The status code.</param>
+            <param name="statusDescription">The status description.</param>
+        </member>
+        <member name="M:CarePlanWebApi.Models.ApiError.#ctor(System.Int32,System.String,CarePlanWebApi.Models.ApiErrorMessage)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.ApiError" /> class.
+            </summary>
+            <param name="statusCode">The status code.</param>
+            <param name="statusDescription">The status description.</param>
+            <param name="message">The message.</param>
+        </member>
+        <member name="T:CarePlanWebApi.Models.InternalServerError">
+            <summary>
+            Custom error for Status code 500 [InternalServerError]
+            </summary>
+            <seealso cref="T:CarePlanWebApi.Models.ApiError" />
+        </member>
+        <member name="M:CarePlanWebApi.Models.InternalServerError.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.InternalServerError"/> class.
+            </summary>
+        </member>
+        <member name="M:CarePlanWebApi.Models.InternalServerError.#ctor(CarePlanWebApi.Models.ApiErrorMessage)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.InternalServerError" /> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="T:CarePlanWebApi.Models.NotFoundError">
+            <summary>
+            Custom error for Status code 404 [NotFound]
+            </summary>
+            <seealso cref="T:CarePlanWebApi.Models.ApiError" />
+        </member>
+        <member name="M:CarePlanWebApi.Models.NotFoundError.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.NotFoundError"/> class.
+            </summary>
+        </member>
+        <member name="M:CarePlanWebApi.Models.NotFoundError.#ctor(CarePlanWebApi.Models.ApiErrorMessage)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.NotFoundError" /> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="T:CarePlanWebApi.Models.BadRequestError">
+            <summary>
+            Custom error for Status code 400 [BadRequest]
+            </summary>
+            <seealso cref="T:CarePlanWebApi.Models.ApiError" />
+        </member>
+        <member name="M:CarePlanWebApi.Models.BadRequestError.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.BadRequestError"/> class.
+            </summary>
+        </member>
+        <member name="M:CarePlanWebApi.Models.BadRequestError.#ctor(CarePlanWebApi.Models.ApiErrorMessage)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.BadRequestError" /> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="T:CarePlanWebApi.Models.ApiErrorMessage">
+            <summary>
+            An structured Error response
+            </summary>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiErrorMessage.Code">
+            <summary>
+            Gets the code.
+            </summary>
+            <value>
+            The code.
+            </value>
+        </member>
+        <member name="P:CarePlanWebApi.Models.ApiErrorMessage.Message">
+            <summary>
+            Gets the status description.
+            </summary>
+            <value>
+            The status description.
+            </value>
+        </member>
+        <member name="M:CarePlanWebApi.Models.ApiErrorMessage.#ctor(System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.ApiErrorMessage"/> class.
+            </summary>
+            <param name="code">The code.</param>
+            <param name="message">The message.</param>
+        </member>
+        <member name="T:CarePlanWebApi.Program">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:CarePlanWebApi.Program.Main(System.String[])">
+            <summary>
+            Defines the entry point of the application.
+            </summary>
+            <param name="args">The arguments.</param>
+        </member>
+        <member name="M:CarePlanWebApi.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            Creates the host builder.
+            </summary>
+            <param name="args">The arguments.</param>
+            <returns></returns>
+        </member>
+        <member name="T:CarePlanWebApi.Services.CarePlanService">
+            <summary>
+            handles all the CarePlan CRUD operations
+            </summary>
+        </member>
+        <member name="F:CarePlanWebApi.Services.CarePlanService._dataService">
+            <summary>
+            The data service
+            </summary>
+        </member>
+        <member name="F:CarePlanWebApi.Services.CarePlanService._logger">
+            <summary>
+            The logger
+            </summary>
+        </member>
+        <member name="M:CarePlanWebApi.Services.CarePlanService.#ctor(CarePlanWebApi.Services.DataService,Microsoft.Extensions.Logging.ILogger{CarePlanWebApi.Services.DataService})">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarePlanWebApi.Services.CarePlanService"/> class.
+            </summary>
+            <param name="dataService">The data service.</param>
+            <param name="logger">The logger.</param>
+        </member>
+        <member name="M:CarePlanWebApi.Services.CarePlanService.GetCarePlans">
+            <summary>
+            Gets the care plans.
+            </summary>
+            <returns>A list of api models</returns>
+        </member>
+        <member name="M:CarePlanWebApi.Services.CarePlanService.GetCarePlan(System.Int32)">
+            <summary>
+            Gets the care plan by the specified id.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns>The api model</returns>
+        </member>
+        <member name="M:CarePlanWebApi.Services.CarePlanService.CreateCarePlan(CarePlanWebApi.Models.ApiCarePlan)">
+            <summary>
+            Creates the care plan.
+            </summary>
+            <param name="carePlan">The care plan.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CarePlanWebApi.Services.CarePlanService.UpdateCarePlan(CarePlanWebApi.Models.ApiCarePlan)">
+            <summary>
+            Updates the care plan.
+            </summary>
+            <param name="carePlan">The care plan.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CarePlanWebApi.Services.CarePlanService.DeleteCarePlan(System.Int32)">
+            <summary>
+            Deletes the care plan.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="T:CarePlanWebApi.Services.DataService">
+            <summary>
+            Handle all the CRUD data request
+            </summary>
+        </member>
+        <member name="F:CarePlanWebApi.Services.DataService._dlAppSettings">
+            <summary>
+            The dl application settings
+            </summary>
+        </member>
+        <member name="F:CarePlanWebApi.Services.DataService._logger">
+            <summary>
+            The logger
+            </summary>
+        </member>
+        <member name="M:CarePlanWebApi.Services.DataService.#ctor(Microsoft.Extensions.Options.IOptions{CarePlanWebApi.DataLayer.DL_AppSettings},Microsoft.Extensions.Logging.ILogger{CarePlanWebApi.Services.DataService})">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarePlanWebApi.Services.DataService" /> class.
+            </summary>
+            <param name="dlAppSettings">The dl application settings.</param>
+            <param name="logger">The logger.</param>
+        </member>
+        <member name="M:CarePlanWebApi.Services.DataService.GetCarePlans">
+            <summary>
+            Gets the care plans.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CarePlanWebApi.Services.DataService.GetCarePlan(System.Int32)">
+            <summary>
+            Gets the care plan.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CarePlanWebApi.Services.DataService.CreateCarePlan(CarePlanWebApi.Models.ApiCarePlan)">
+            <summary>
+            Creates the care plan.
+            </summary>
+            <param name="carePlan">The care plan.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CarePlanWebApi.Services.DataService.UpdateCarePlan(CarePlanWebApi.Models.ApiCarePlan)">
+            <summary>
+            Updates the care plan.
+            </summary>
+            <param name="carePlan">The care plan.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CarePlanWebApi.Services.DataService.DeleteCarePlan(System.Int32)">
+            <summary>
+            Deletes the care plan.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns>True if the entity was deleted. False otherwise</returns>
+        </member>
+        <member name="M:CarePlanWebApi.Services.DataService.GetDbContext">
+            <summary>
+            Gets the database context.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CarePlanWebApi.Startup">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:CarePlanWebApi.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarePlanWebApi.Startup"/> class.
+            </summary>
+            <param name="configuration">The configuration.</param>
+        </member>
+        <member name="P:CarePlanWebApi.Startup.Configuration">
+            <summary>
+            Gets the configuration.
+            </summary>
+            <value>
+            The configuration.
+            </value>
+        </member>
+        <member name="M:CarePlanWebApi.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Configures the services.
+            </summary>
+            <param name="services">The services.</param>
+        </member>
+        <member name="M:CarePlanWebApi.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Configures the specified application.
+            </summary>
+            <param name="app">The application.</param>
+            <param name="env">The env.</param>
+        </member>
+    </members>
+</doc>
