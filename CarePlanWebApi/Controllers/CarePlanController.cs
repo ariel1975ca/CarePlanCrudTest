@@ -64,7 +64,7 @@ namespace CarePlanWebApi.Controllers
         /// <response code="500">An unexpected error occurs.</response>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ApiCarePlan>), 200)]
-        [ProducesResponseType(typeof(InternalServerError), 500)]
+        [ProducesResponseType(typeof(ApiError), 500)]
         public IActionResult Get()
         {
             IEnumerable<ApiCarePlan> apiModels;
@@ -76,7 +76,7 @@ namespace CarePlanWebApi.Controllers
             {
                 this._logger.LogError(ex, "There was an error during the CarePlanController.Get request!");
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new InternalServerError(new ApiErrorMessage(0, ex.Message)));
+                return StatusCode(StatusCodes.Status500InternalServerError, ApiError.InternalServerError(new ApiErrorMessage(0, ex.Message)));
             }
 
             return new OkObjectResult(apiModels ?? new List<ApiCarePlan>());
@@ -94,14 +94,14 @@ namespace CarePlanWebApi.Controllers
         /// <response code="500">An unexpected error occurs.</response>
         [HttpGet("{id}", Name = "GetCarePlan")]
         [ProducesResponseType(typeof(ApiCarePlan), 200)]
-        [ProducesResponseType(typeof(BadRequestError), 400)]
-        [ProducesResponseType(typeof(NotFoundError), 404)]
-        [ProducesResponseType(typeof(InternalServerError), 500)]
+        [ProducesResponseType(typeof(ApiError), 400)]
+        [ProducesResponseType(typeof(ApiError), 404)]
+        [ProducesResponseType(typeof(ApiError), 500)]
         public IActionResult GetCarePlan(int id)
         {
             if (id <= 0)
             {
-                return BadRequest(new BadRequestError());
+                return BadRequest(ApiError.BadRequestError());
             }
 
             ApiCarePlan apiModel;
@@ -113,12 +113,12 @@ namespace CarePlanWebApi.Controllers
             {
                 this._logger.LogError(ex, "There was an error during the CarePlanController.GetCarePlan request!");
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new InternalServerError(new ApiErrorMessage(0, ex.Message)));
+                return StatusCode(StatusCodes.Status500InternalServerError, ApiError.InternalServerError(new ApiErrorMessage(0, ex.Message)));
             }
 
             if (apiModel == null)
             {
-                return NotFound(new NotFoundError());
+                return NotFound(ApiError.NotFoundError());
             }
 
             return new OkObjectResult(apiModel);
@@ -134,9 +134,9 @@ namespace CarePlanWebApi.Controllers
         /// <response code="500">There was an error creating the care plan.</response>
         [HttpPost()]
         [ProducesResponseType(typeof(ApiCarePlan), 201)]
-        [ProducesResponseType(typeof(BadRequestError), 400)]
-        [ProducesResponseType(typeof(NotFoundError), 404)]
-        [ProducesResponseType(typeof(InternalServerError), 500)]
+        [ProducesResponseType(typeof(ApiError), 400)]
+        [ProducesResponseType(typeof(ApiError), 404)]
+        [ProducesResponseType(typeof(ApiError), 500)]
         public IActionResult CreateCarePlan([FromBody] ApiCarePlan carePlan)
         {
             // Here we can also validate the Care plan specifications ()
@@ -154,7 +154,7 @@ namespace CarePlanWebApi.Controllers
             {
                 this._logger.LogError(ex, "There was an error during the CarePlanController.CreateCarePlan request!");
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new InternalServerError(new ApiErrorMessage(0, ex.Message)));
+                return StatusCode(StatusCodes.Status500InternalServerError, ApiError.InternalServerError(new ApiErrorMessage(0, ex.Message)));
             }
 
             if (apiModel == null)
@@ -178,9 +178,9 @@ namespace CarePlanWebApi.Controllers
         /// <response code="500">There was an error creating the care plan.</response>
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiCarePlan), 202)]
-        [ProducesResponseType(typeof(BadRequestError), 400)]
-        [ProducesResponseType(typeof(NotFoundError), 404)]
-        [ProducesResponseType(typeof(InternalServerError), 500)]
+        [ProducesResponseType(typeof(ApiError), 400)]
+        [ProducesResponseType(typeof(ApiError), 404)]
+        [ProducesResponseType(typeof(ApiError), 500)]
         public IActionResult UpdateCarePlan(int id, [FromBody] ApiCarePlan carePlan)
         {
             if (carePlan == null || carePlan.Id != id)
@@ -197,7 +197,7 @@ namespace CarePlanWebApi.Controllers
             {
                 this._logger.LogError(ex, "There was an error during the CarePlanController.UpdateCarePlan request!");
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new InternalServerError(new ApiErrorMessage(0, ex.Message)));
+                return StatusCode(StatusCodes.Status500InternalServerError, ApiError.InternalServerError(new ApiErrorMessage(0, ex.Message)));
             }
 
             if (apiModel == null)
@@ -220,9 +220,9 @@ namespace CarePlanWebApi.Controllers
         /// <response code="500">There was an error creating the care plan.</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), 204)]
-        [ProducesResponseType(typeof(BadRequestError), 400)]
-        [ProducesResponseType(typeof(NotFoundError), 404)]
-        [ProducesResponseType(typeof(InternalServerError), 500)]
+        [ProducesResponseType(typeof(ApiError), 400)]
+        [ProducesResponseType(typeof(ApiError), 404)]
+        [ProducesResponseType(typeof(ApiError), 500)]
         public IActionResult DeleteCarePlan(int id)
         {
             bool result;
@@ -234,7 +234,7 @@ namespace CarePlanWebApi.Controllers
             {
                 this._logger.LogError(ex, "There was an error during the CarePlanController.DeleteCarePlan request!");
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new InternalServerError(new ApiErrorMessage(0, ex.Message)));
+                return StatusCode(StatusCodes.Status500InternalServerError, ApiError.InternalServerError(new ApiErrorMessage(0, ex.Message)));
             }
 
             if (!result)

@@ -32,7 +32,7 @@
             </summary>
             <returns>
             An Array with all the Care Plans
-            </returns>        
+            </returns>
             <response code="200">Care plans retreived.</response>
             <response code="500">An unexpected error occurs.</response>
         </member>
@@ -222,7 +222,7 @@
         </member>
         <member name="M:CarePlanWebApi.Models.ApiError.#ctor(System.Int32,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.ApiError"/> class.
+            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.ApiError" /> class.
             </summary>
             <param name="statusCode">The status code.</param>
             <param name="statusDescription">The status description.</param>
@@ -235,56 +235,26 @@
             <param name="statusDescription">The status description.</param>
             <param name="message">The message.</param>
         </member>
-        <member name="T:CarePlanWebApi.Models.InternalServerError">
+        <member name="M:CarePlanWebApi.Models.ApiError.InternalServerError(CarePlanWebApi.Models.ApiErrorMessage)">
             <summary>
             Custom error for Status code 500 [InternalServerError]
             </summary>
-            <seealso cref="T:CarePlanWebApi.Models.ApiError" />
-        </member>
-        <member name="M:CarePlanWebApi.Models.InternalServerError.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.InternalServerError"/> class.
-            </summary>
-        </member>
-        <member name="M:CarePlanWebApi.Models.InternalServerError.#ctor(CarePlanWebApi.Models.ApiErrorMessage)">
-            <summary>
-            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.InternalServerError" /> class.
-            </summary>
             <param name="message">The message.</param>
+            <returns></returns>
         </member>
-        <member name="T:CarePlanWebApi.Models.NotFoundError">
+        <member name="M:CarePlanWebApi.Models.ApiError.NotFoundError(CarePlanWebApi.Models.ApiErrorMessage)">
             <summary>
             Custom error for Status code 404 [NotFound]
             </summary>
-            <seealso cref="T:CarePlanWebApi.Models.ApiError" />
-        </member>
-        <member name="M:CarePlanWebApi.Models.NotFoundError.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.NotFoundError"/> class.
-            </summary>
-        </member>
-        <member name="M:CarePlanWebApi.Models.NotFoundError.#ctor(CarePlanWebApi.Models.ApiErrorMessage)">
-            <summary>
-            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.NotFoundError" /> class.
-            </summary>
             <param name="message">The message.</param>
+            <returns></returns>
         </member>
-        <member name="T:CarePlanWebApi.Models.BadRequestError">
+        <member name="M:CarePlanWebApi.Models.ApiError.BadRequestError(CarePlanWebApi.Models.ApiErrorMessage)">
             <summary>
             Custom error for Status code 400 [BadRequest]
             </summary>
-            <seealso cref="T:CarePlanWebApi.Models.ApiError" />
-        </member>
-        <member name="M:CarePlanWebApi.Models.BadRequestError.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.BadRequestError"/> class.
-            </summary>
-        </member>
-        <member name="M:CarePlanWebApi.Models.BadRequestError.#ctor(CarePlanWebApi.Models.ApiErrorMessage)">
-            <summary>
-            Initializes a new instance of the <see cref="T:CarePlanWebApi.Models.BadRequestError" /> class.
-            </summary>
             <param name="message">The message.</param>
+            <returns></returns>
         </member>
         <member name="T:CarePlanWebApi.Models.ApiErrorMessage">
             <summary>

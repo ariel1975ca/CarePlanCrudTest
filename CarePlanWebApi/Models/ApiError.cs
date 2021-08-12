@@ -42,15 +42,11 @@ namespace CarePlanWebApi.Models
         #region - Constructors and initializers -
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiError"/> class.
+        /// Initializes a new instance of the <see cref="ApiError" /> class.
         /// </summary>
         /// <param name="statusCode">The status code.</param>
         /// <param name="statusDescription">The status description.</param>
-        public ApiError(int statusCode, string statusDescription)
-        {
-            this.StatusCode = statusCode;
-            this.StatusDescription = statusDescription;
-        }
+        public ApiError(int statusCode, string statusDescription) : this(statusCode, statusDescription, null) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiError" /> class.
@@ -59,98 +55,46 @@ namespace CarePlanWebApi.Models
         /// <param name="statusDescription">The status description.</param>
         /// <param name="message">The message.</param>
         public ApiError(int statusCode, string statusDescription, ApiErrorMessage message)
-            : this(statusCode, statusDescription)
         {
+            this.StatusCode = statusCode;
+            this.StatusDescription = statusDescription;
             this.ErrorMessage = message;
         }
 
         #endregion - Constructors and initializers -
-    }
 
-    /// <summary>
-    /// Custom error for Status code 500 [InternalServerError]
-    /// </summary>
-    /// <seealso cref="CarePlanWebApi.Models.ApiError" />
-    public class InternalServerError : ApiError
-    {
-        #region - Constructors and initializers -
+        #region - Public methods -
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InternalServerError"/> class.
-        /// </summary>
-        public InternalServerError()
-            : base((int)HttpStatusCode.InternalServerError, HttpStatusCode.InternalServerError.ToString())
-        {
-        }
-
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InternalServerError" /> class.
+        /// Custom error for Status code 500 [InternalServerError]
         /// </summary>
         /// <param name="message">The message.</param>
-        public InternalServerError(ApiErrorMessage message)
-            : base((int)HttpStatusCode.InternalServerError, HttpStatusCode.InternalServerError.ToString(), message)
+        /// <returns></returns>
+        public static ApiError InternalServerError(ApiErrorMessage message = null)
         {
+            return new ApiError((int)HttpStatusCode.InternalServerError, HttpStatusCode.InternalServerError.ToString(), message);
         }
 
-        #endregion - Constructors and initializers -
-    }
-
-    /// <summary>
-    /// Custom error for Status code 404 [NotFound]
-    /// </summary>
-    /// <seealso cref="CarePlanWebApi.Models.ApiError" />
-    public class NotFoundError : ApiError
-    {
-        #region - Constructors and initializers -
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="NotFoundError"/> class.
-        /// </summary>
-        public NotFoundError()
-            : base((int)HttpStatusCode.NotFound, HttpStatusCode.NotFound.ToString())
-        {
-        }
-
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NotFoundError" /> class.
+        /// Custom error for Status code 404 [NotFound]
         /// </summary>
         /// <param name="message">The message.</param>
-        public NotFoundError(ApiErrorMessage message)
-            : base((int)HttpStatusCode.NotFound, HttpStatusCode.NotFound.ToString(), message)
+        /// <returns></returns>
+        public static ApiError NotFoundError(ApiErrorMessage message = null)
         {
+            return new ApiError((int)HttpStatusCode.NotFound, HttpStatusCode.NotFound.ToString(), message);
         }
 
-        #endregion - Constructors and initializers -
-    }
-
-    /// <summary>
-    /// Custom error for Status code 400 [BadRequest]
-    /// </summary>
-    /// <seealso cref="CarePlanWebApi.Models.ApiError" />
-    public class BadRequestError : ApiError
-    {
-        #region - Constructors and initializers -
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="BadRequestError"/> class.
-        /// </summary>
-        public BadRequestError()
-            : base((int)HttpStatusCode.BadRequest, HttpStatusCode.BadRequest.ToString())
-        {
-        }
-
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BadRequestError" /> class.
+        /// Custom error for Status code 400 [BadRequest]
         /// </summary>
         /// <param name="message">The message.</param>
-        public BadRequestError(ApiErrorMessage message)
-            : base((int)HttpStatusCode.BadRequest, HttpStatusCode.BadRequest.ToString(), message)
+        /// <returns></returns>
+        public static ApiError BadRequestError(ApiErrorMessage message = null)
         {
+            return new ApiError((int)HttpStatusCode.BadRequest, HttpStatusCode.BadRequest.ToString(), message);
         }
 
-        #endregion - Constructors and initializers -
+        #endregion - Public methods -
     }
 }
