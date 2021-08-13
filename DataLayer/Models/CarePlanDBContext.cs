@@ -37,8 +37,6 @@ namespace CarePlanWebApi.DataLayer.Models
 
                 entity.Property(e => e.ActualStartDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Completed).HasDefaultValueSql("((0))");
-
                 entity.Property(e => e.EndDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Outcome).HasMaxLength(1000);

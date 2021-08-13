@@ -43,7 +43,7 @@ namespace CarePlanWebApi.DataLayer
 			DateTime targetDate,
 			string reason,
 			string action,
-			bool? completed = null,
+			bool completed = false,
 			DateTime? endDate = null,
 			string outcome = null,
 			bool savechanges = true)
@@ -116,7 +116,7 @@ namespace CarePlanWebApi.DataLayer
 			DateTime targetDate,
 			string reason,
 			string action,
-			bool? completed = null,
+			bool completed = false,
 			DateTime? endDate = null,
 			string outcome = null,
 			bool savechanges = true)

@@ -15,7 +15,7 @@ namespace CarePlanWebApi.DataLayer.Models
         public DateTime TargetDate { get; set; }
         public string Reason { get; set; }
         public string Action { get; set; }
-        public bool? Completed { get; set; }
+        public bool Completed { get; set; }
         public DateTime? EndDate { get; set; }
         public string Outcome { get; set; }
     }
