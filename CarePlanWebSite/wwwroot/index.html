@@ -1,0 +1,399 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Care Plans CRUD</title>
+    <base href="/" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h1>Care Plans</h1>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="my-3">
+                            <table id="carePlanTable" class="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Patient Name</th>
+                                        <th>User Name</th>
+                                        <th>Actual Start Date/Time</th>
+                                        <th>Target Date/Time</th>
+                                        <th>Reason</th>
+                                        <th>Action</th>
+                                        <th>Completed</th>
+                                        <th>End Date/Time</th>
+                                        <th>Outcome</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div>
+                            <button type="button" id="addCarePlanBtn" class="btn btn-primary" onclick="addCarePlanClick();">Add Care Plan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Care Plan Information</h5>
+                        <form class="row g-3">
+                            <input type="hidden" id="cpId" value="0" />
+                            <div class="col-12">
+                                <label for="cpTitle" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="cpTitle" placeholder="" maxlength="450">
+                            </div>
+                            <div class="col-6">
+                                <label for="cpPatientName" class="form-label">Patient Name</label>
+                                <input type="text" class="form-control" id="cpPatientName" placeholder="" maxlength="450">
+                            </div>
+                            <div class="col-6">
+                                <label for="cpUserName" class="form-label">User Name</label>
+                                <input type="text" class="form-control" id="cpUserName" placeholder="" maxlength="450">
+                            </div>
+                            <div class="col-6">
+                                <label for="cpActualStartDate" class="form-label">Actual Start Date/Time</label>
+                                <input type="datetime-local" class="form-control" id="cpActualStartDate" placeholder="">
+                            </div>
+                            <div class="col-6">
+                                <label for="cpTargetDate" class="form-label">Target Date/Time</label>
+                                <input type="datetime-local" class="form-control" id="cpTargetDate" placeholder="">
+                            </div>
+                            <div class="col-12">
+                                <label for="cpReason" class="form-label">Reason</label>
+                                <textarea class="form-control" id="cpReason" rows="2" maxlength="1000"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label for="cpAction" class="form-label">Action</label>
+                                <textarea class="form-control" id="cpAction" rows="2" maxlength="1000"></textarea>
+                            </div>
+                            <div class="col-6 d-flex align-items-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="cpCompleted">
+                                    <label class="form-check-label" for="cpCompleted">
+                                        Completed?
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label for="cpEndDate" class="form-label">End Date/Time</label>
+                                <input type="datetime-local" class="form-control" id="cpEndDate" placeholder="">
+                            </div>
+                            <div class="col-12">
+                                <label for="cpOutcome" class="form-label">Outcome</label>
+                                <textarea class="form-control" id="cpOutcome" rows="2" maxlength="1000"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="button" id="cpUpdateBtn" class="btn btn-primary" onclick="updateCarePlanClick();">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            // go get the care plans from API and initialize the table
+            getCarePlans();
+        });
+
+        var CarePlan = {
+            id: 0,
+            title: "",
+            patient_name: "",
+            user_name: "",
+            actual_start_date: "",
+            target_date: "",
+            reason: "",
+            action: "",
+            completed: false,
+            end_date: null,
+            outcome: null
+        }
+
+        // Handle click event on Update form button
+        function updateCarePlanClick() {
+            // Build care plan object from inputs
+            CarePlan = new Object();
+
+            setCarePlanFromForm(CarePlan)
+
+            if ($("#cpUpdateBtn").text().trim() == "Add") {
+                addCarePlan(CarePlan);
+            }
+            else {
+                updateCarePlan(CarePlan);
+            }
+        }
+
+        // Handle click event on Add table button
+        function addCarePlanClick() {
+            // clear the forms fields data
+            clearCarePlanForm();
+        }
+
+        // Handle click event on Edit table row button
+        function getCarePlanClick(btn) {
+            // Get care plan id from data- attribute
+            var id = $(btn).data("id");
+
+            // Call Web API to get the care plan and set it to the form
+            getCarePlan(id);
+        }
+
+        // Call Web API to get the care plans
+        function getCarePlans() {
+            $.ajax({
+                url: 'http://localhost:33926/careplans/',
+                type: 'GET',
+                dataType: 'json',
+                success: function (carePlans) {
+                    getCarePlansSuccess(carePlans);
+                },
+                error: function (request, message, error) {
+                    handleException(request, message, error);
+                }
+            });
+        }
+
+        // Call Web API to get the specified care plan
+        function getCarePlan(id) {
+            $.ajax({
+                url: "http://localhost:33926/careplans/" + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (carePlan) {
+                    setCarePlanToForm(carePlan);
+
+                    // Change Update Button Text
+                    $("#cpUpdateBtn").text("Update");
+                },
+                error: function (request, message, error) {
+                    handleException(request, message, error);
+                }
+            });
+        }
+
+        // Call Web API to add the specified care plan
+        function addCarePlan(carePlan) {
+            $.ajax({
+                url: "http://localhost:33926/careplans/",
+                type: 'POST',
+                contentType:
+                    "application/json;charset=utf-8",
+                data: JSON.stringify(carePlan),
+                success: function (carePlan) {
+                    addCarePlanSuccess(carePlan);
+                },
+                error: function (request, message, error) {
+                    handleException(request, message, error);
+                }
+            });
+        }
+
+        // Call Web API to update the specified care plan
+        function updateCarePlan(carePlan) {
+            $.ajax({
+                url: "http://localhost:33926/careplans/" + carePlan.id,
+                type: 'PUT',
+                contentType:
+                    "application/json;charset=utf-8",
+                data: JSON.stringify(carePlan),
+                success: function (carePlan) {
+                    updateCarePlanSuccess(carePlan);
+                },
+                error: function (request, message, error) {
+                    handleException(request, message, error);
+                }
+            });
+        }
+
+        // Handles the API call errors with an alert dialog
+        function handleException(request, message, error) {
+            var msg = "";
+            msg += "Code: " + request.status + "\n";
+            msg += "Text: " + request.statusText + "\n";
+            if (request.responseJSON && request.responseJSON.error) {
+                msg += "Message: " + request.responseJSON.error.message + "\n";
+            }
+            alert(msg);
+        }
+
+        // Add the care plans we got from API to the table
+        function getCarePlansSuccess(carePlans) {
+            // Iterate over the collection of data
+            $.each(carePlans, function (index, carePlan) {
+                // Add a row to the care plans table
+                carePlanAddTableRow(carePlan);
+            });
+        }
+
+        // Add the care plan to the table
+        function addCarePlanSuccess(carePlan) {
+            // Add a row to the care plans table
+            carePlanAddTableRow(carePlan);
+
+            // clear the forms fields data
+            clearCarePlanForm();
+        }
+
+        // Update the care plan table row
+        function updateCarePlanSuccess(carePlan) {
+
+            //*** for this test the table is manipulated to update the specified row.
+            // another approach is to refresh the whole table from the API ***
+
+            // Update the care plans table row
+            carePlanUpdateTableRow(carePlan);
+
+            // clear the forms fields data
+            clearCarePlanForm();
+        }
+
+        // Finds and update the care plan table row
+        // finds the matching row, add a new row with updated data and then delete the old one
+        function carePlanUpdateTableRow(carePlan) {
+            // Find care plan in table
+            var row = $("#carePlanTable button[data-id='" +
+                carePlan.id + "']").parents("tr")[0];
+
+            // Add changed care plan to table
+            $(row).after(carePlanBuildTableRow(carePlan));
+
+            // Remove original care plan
+            $(row).remove();
+        }
+
+        // Add the care plan to the table
+        function carePlanAddTableRow(carePlan) {
+            // Check if <tbody> tag exists, add one if not
+            if ($("#carePlanTable tbody").length == 0) {
+                $("#carePlanTable").append("<tbody></tbody>");
+            }
+            // Append row to <table>
+            $("#carePlanTable tbody").append(
+                carePlanBuildTableRow(carePlan));
+        }
+
+        // build the table row with the care plan data
+        function carePlanBuildTableRow(carePlan) {
+            var ret =
+                "<tr>" +
+                "<td>" + carePlan.title + "</td>" +
+                "<td>" + carePlan.patient_name + "</td>" +
+                "<td>" + carePlan.user_name + "</td>" +
+                "<td>" + carePlan.actual_start_date + "</td>" +
+                "<td>" + carePlan.target_date + "</td>" +
+                "<td>" + carePlan.reason + "</td>" +
+                "<td>" + carePlan.action + "</td>" +
+                "<td>" + carePlan.completed + "</td>";
+
+            if (carePlan.end_date) {
+                ret += "<td>" + carePlan.end_date + "</td>";
+            }
+            else {
+                ret += "<td></td>";
+            }
+
+            if (carePlan.outcome) {
+                ret += "<td>" + carePlan.outcome + "</td>";
+            }
+            else {
+                ret += "<td></td>";
+            }
+
+            ret += "<td>" + "<button type='button' title='Edit the care plan' " + "onclick='getCarePlanClick(this);' " +
+                "class='btn btn-success btn-sm' " + "data-id='" + carePlan.id + "'>" +
+                "<i class='bi bi-pencil' />" + "</button>" + "</td>";
+
+            ret += "</tr>";
+
+            return ret;
+        }
+
+        // clears the Care Plan Form data
+        function clearCarePlanForm() {
+            $("#cpId").val(0);
+
+            $("#cpTitle").val("");
+            $("#cpPatientName").val("");
+            $("#cpUserName").val("");
+            $("#cpActualStartDate").val("");
+            $("#cpTargetDate").val("");
+            $("#cpReason").val("");
+            $("#cpAction").val("");
+            $("#cpCompleted").prop("checked", false);
+            $("#cpEndDate").val("");
+            $("#cpOutcome").val("");
+
+            // Change back to Add Button Text
+            $("#cpUpdateBtn").text("Add");
+        }
+
+        // sets the forms fields with the care plan data
+        function setCarePlanToForm(carePlan) {
+            $("#cpId").val(carePlan.id);
+
+            $("#cpTitle").val(carePlan.title);
+            $("#cpPatientName").val(carePlan.patient_name);
+            $("#cpUserName").val(carePlan.user_name);
+            $("#cpActualStartDate").val(carePlan.actual_start_date);
+            $("#cpTargetDate").val(carePlan.target_date);
+            $("#cpReason").val(carePlan.reason);
+            $("#cpAction").val(carePlan.action);
+            if (carePlan.completed) {
+                $("#cpCompleted").prop("checked", true);
+            }
+            else {
+                $("#cpCompleted").prop("checked", false);
+            }
+            $("#cpEndDate").val(carePlan.end_date);
+            $("#cpOutcome").val(carePlan.outcome);
+        }
+
+        // sets the carePlan objects data from form fields
+        function setCarePlanFromForm(carePlan) {
+            carePlan.id = $("#cpId").val();
+
+            carePlan.title = $("#cpTitle").val();
+            carePlan.patient_name = $("#cpPatientName").val();
+            carePlan.user_name = $("#cpUserName").val();
+            carePlan.actual_start_date = $("#cpActualStartDate").val();
+            carePlan.target_date = $("#cpTargetDate").val();
+            carePlan.reason = $("#cpReason").val();
+            carePlan.action = $("#cpAction").val();
+            carePlan.completed = $("#cpCompleted").is(':checked');
+
+            var endDate = $("#cpEndDate").val();
+            if (endDate) {
+                carePlan.end_date = $("#cpEndDate").val();
+            }
+            else {
+                carePlan.end_date = null;
+            }
+
+            carePlan.outcome = $("#cpOutcome").val();
+        }
+
+    </script>
+</body>
+</html>

@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31605.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarePlanWebApi", "CarePlanWebApi\CarePlanWebApi.csproj", "{E0A3F03C-6EA5-4329-B417-642853A307F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{4EDA6B6B-8EE2-4652-A3A6-E97A22EE61FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{4EDA6B6B-8EE2-4652-A3A6-E97A22EE61FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarePlanWebSite", "CarePlanWebSite\CarePlanWebSite.csproj", "{38F09A70-893A-48B4-8AA4-422611F53AAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4EDA6B6B-8EE2-4652-A3A6-E97A22EE61FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EDA6B6B-8EE2-4652-A3A6-E97A22EE61FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EDA6B6B-8EE2-4652-A3A6-E97A22EE61FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38F09A70-893A-48B4-8AA4-422611F53AAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38F09A70-893A-48B4-8AA4-422611F53AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38F09A70-893A-48B4-8AA4-422611F53AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38F09A70-893A-48B4-8AA4-422611F53AAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

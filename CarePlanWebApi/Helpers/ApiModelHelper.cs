@@ -33,7 +33,7 @@ namespace CarePlanWebApi.Helpers
                 Id = entity.IdCarePlan,
                 Action = entity.Action,
                 ActualStartDate = entity.ActualStartDate,
-                Completed = entity.Completed,
+                Completed = entity.Completed ?? false,
                 EndDate = entity.EndDate,
                 Outcome = entity.Outcome,
                 PatientName = entity.PatientName,

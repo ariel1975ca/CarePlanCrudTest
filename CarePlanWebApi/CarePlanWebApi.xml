@@ -425,6 +425,11 @@
             
             </summary>
         </member>
+        <member name="F:CarePlanWebApi.Startup.CorsAllowSpecificOriginsName">
+            <summary>
+            The cors allow specific origins name
+            </summary>
+        </member>
         <member name="M:CarePlanWebApi.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             Initializes a new instance of the <see cref="T:CarePlanWebApi.Startup"/> class.

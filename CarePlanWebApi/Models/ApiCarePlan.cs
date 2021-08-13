@@ -87,7 +87,7 @@ namespace CarePlanWebApi.Models
         /// The completed.
         /// </value>
         [JsonPropertyName("completed")]
-        public bool? Completed { get; set; }
+        public bool Completed { get; set; }
 
         /// <summary>
         /// Gets or sets the end date.

@@ -20,6 +20,11 @@ namespace CarePlanWebApi
     public class Startup
     {
         /// <summary>
+        /// The cors allow specific origins name
+        /// </summary>
+        readonly string CorsAllowSpecificOriginsName = "_corsAllowSpecificOrigins";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
@@ -47,6 +52,15 @@ namespace CarePlanWebApi
 
             services.AddTransient<DataService>();
             services.AddTransient<CarePlanService>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: CorsAllowSpecificOriginsName,
+                                  builder =>
+                                  {
+                                      builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                                  });
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -76,6 +90,8 @@ namespace CarePlanWebApi
             }
 
             app.UseRouting();
+
+            app.UseCors(CorsAllowSpecificOriginsName);
 
             //app.UseAuthorization();
 
