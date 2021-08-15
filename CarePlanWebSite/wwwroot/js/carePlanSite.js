@@ -72,6 +72,124 @@ function carePlanBuildTableRow(carePlan) {
 //
 //***********************************************************//
 
+var cpValidator;
+
+$(document).ready(function () {
+    cpValidator = initializeCarePlanFormValidations();
+});
+
+// Add a custom method for the End Date "Not before Actual Start Date" validation
+jQuery.validator.addMethod("greaterThanEDate",
+    function (value, element, params) {
+
+        if (!/Invalid|NaN/.test(new Date(value))) {
+            return new Date(value) >= new Date($(params).val());
+        }
+    }, 'Must be greater or equal than {0}.');
+
+// Set the validations rules and messages of the Care Plan form
+function initializeCarePlanFormValidations() {
+    return $("#cpForm").validate({
+        rules: {
+            cpTitle: {
+                required: true,
+                maxlength: 450
+            },
+            cpPatientName: {
+                required: true,
+                maxlength: 450
+            },
+            cpUserName: {
+                required: true,
+                maxlength: 450
+            },
+            cpActualStartDate: "required",
+            cpTargetDate: "required",
+            cpReason: {
+                required: true,
+                maxlength: 1000
+            },
+            cpAction: {
+                required: true,
+                maxlength: 1000
+            },
+            cpEndDate: {
+                required: "#cpCompleted:checked",
+                greaterThanEDate: "#cpActualStartDate"
+            },
+            cpOutcome: {
+                required: "#cpCompleted:checked",
+                maxlength: 1000
+            }
+        },
+        messages: {
+            cpTitle: {
+                required: "Please enter the title",
+                maxlength: "The title cannot have more than 450 characters"
+            },
+            cpPatientName: {
+                required: "Please enter the patient name",
+                maxlength: "The patient name cannot have more than 450 characters"
+            },
+            cpUserName: {
+                required: "Please enter the user name",
+                maxlength: "The user name cannot have more than 450 characters"
+            },
+            cpActualStartDate: "Please enter the actual start date",
+            cpTargetDate: "Please enter the target date",
+            cpReason: {
+                required: "Please enter the reason",
+                maxlength: "The reason cannot have more than 1000 characters"
+            },
+            cpAction: {
+                required: "Please enter the action",
+                maxlength: "The action cannot have more than 1000 characters"
+            },
+            cpEndDate: {
+                required: "Please enter the end date",
+                greaterThanEDate: "The end date cannot be before the actual start date"
+            },
+            cpOutcome: {
+                required: "Please enter the outcome",
+                maxlength: 1000
+            }
+        },
+        errorElement: "em",
+        errorPlacement: function (error, element) {
+            // Add the `help-block` class to the error element
+            error.addClass("help-block");
+
+            if (element.prop("type") === "checkbox") {
+                error.insertAfter(element.parent("label"));
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).parents(".field").addClass("has-error").removeClass("has-success");
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).parents(".field").addClass("has-success").removeClass("has-error");
+        }
+    });
+}
+
+// handle the toggle visibility of completed care plans
+$("#cpCompletedFields").hide();
+$("#cpCompleted").click(function () {
+    if ($(this).is(":checked")) {
+        $("#cpCompletedFields").show();
+    } else {
+        $("#cpCompletedFields").hide();
+    }
+});
+
+// Apply the validations rules and return true if form validates. false otherwise.
+function isFormCarePlanDataValid() {
+    if (cpValidator) return cpValidator.form();
+    else return false;
+}
+
 // clears the Care Plan Form data
 function clearCarePlanForm() {
     $("#cpId").val(0);
@@ -87,8 +205,14 @@ function clearCarePlanForm() {
     $("#cpEndDate").val("");
     $("#cpOutcome").val("");
 
+    // hide completed extra fields
+    $("#cpCompletedFields").hide();
+
     // Change back to Add Button Text
     $("#cpUpdateBtn").text("Add");
+
+    // reset the form validations
+    if (cpValidator) cpValidator.resetForm();
 }
 
 // sets the forms fields with the care plan data
@@ -104,12 +228,21 @@ function setCarePlanToForm(carePlan) {
     $("#cpAction").val(carePlan.action);
     if (carePlan.completed) {
         $("#cpCompleted").prop("checked", true);
+        $("#cpEndDate").val(carePlan.end_date);
+        $("#cpOutcome").val(carePlan.outcome);
+
+        $("#cpCompletedFields").show();
     }
     else {
         $("#cpCompleted").prop("checked", false);
+        $("#cpEndDate").val("");
+        $("#cpOutcome").val("");
+
+        $("#cpCompletedFields").hide();
     }
-    $("#cpEndDate").val(carePlan.end_date);
-    $("#cpOutcome").val(carePlan.outcome);
+
+    // reset the form validations
+    if (cpValidator) cpValidator.resetForm();
 }
 
 // sets the carePlan objects data from form fields
@@ -125,15 +258,21 @@ function setCarePlanFromForm(carePlan) {
     carePlan.action = $("#cpAction").val();
     carePlan.completed = $("#cpCompleted").is(':checked');
 
-    var endDate = $("#cpEndDate").val();
-    if (endDate) {
-        carePlan.end_date = $("#cpEndDate").val();
+    if (carePlan.completed) {
+        var endDate = $("#cpEndDate").val();
+        if (endDate) {
+            carePlan.end_date = $("#cpEndDate").val();
+        }
+        else {
+            carePlan.end_date = null;
+        }
+
+        carePlan.outcome = $("#cpOutcome").val();
     }
     else {
         carePlan.end_date = null;
+        carePlan.outcome = null;
     }
-
-    carePlan.outcome = $("#cpOutcome").val();
 }
 
 //***********************************************************//

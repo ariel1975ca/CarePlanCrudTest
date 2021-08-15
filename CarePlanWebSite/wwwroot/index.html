@@ -82,7 +82,7 @@
                                 <label for="cpAction" class="form-label">Action</label>
                                 <textarea class="form-control" id="cpAction" name="cpAction" rows="2" maxlength="1000"></textarea>
                             </div>
-                            <div class="col-6 d-flex align-items-center field">
+                            <div class="col-12 field">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="cpCompleted" name="cpCompleted">
                                     <label class="form-check-label" for="cpCompleted">
@@ -90,13 +90,15 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-6 field">
-                                <label for="cpEndDate" class="form-label">End Date/Time</label>
-                                <input type="datetime-local" class="form-control" id="cpEndDate" name="cpEndDate" placeholder="">
-                            </div>
-                            <div class="col-12 field">
-                                <label for="cpOutcome" class="form-label">Outcome</label>
-                                <textarea class="form-control" id="cpOutcome" name="cpOutcome" rows="2" maxlength="1000"></textarea>
+                            <div id="cpCompletedFields">
+                                <div class="col-6 field">
+                                    <label for="cpEndDate" class="form-label">End Date/Time</label>
+                                    <input type="datetime-local" class="form-control" id="cpEndDate" name="cpEndDate" placeholder="">
+                                </div>
+                                <div class="col-12 field mt-3">
+                                    <label for="cpOutcome" class="form-label">Outcome</label>
+                                    <textarea class="form-control" id="cpOutcome" name="cpOutcome" rows="2" maxlength="1000"></textarea>
+                                </div>
                             </div>
                             <div class="col-12 field">
                                 <button type="button" id="cpUpdateBtn" class="btn btn-primary" onclick="updateCarePlanClick();">Add</button>
@@ -116,13 +118,9 @@
 
     <script>
 
-        var cpValidator;
-
         $(document).ready(function () {
             // go get the care plans from API and initialize the table
             getCarePlans();
-
-            cpValidator = initializeCarePlanFormValidations();
         });
 
         var CarePlan = {
@@ -139,98 +137,6 @@
             outcome: null
         }
 
-        // Set the validations rules and messages of the Care Plan form
-        function initializeCarePlanFormValidations() {
-            return $("#cpForm").validate({
-                rules: {
-                    cpTitle: {
-                        required: true,
-                        maxlength: 450
-                    },
-                    cpPatientName: {
-                        required: true,
-                        maxlength: 450
-                    },
-                    cpUserName: {
-                        required: true,
-                        maxlength: 450
-                    },
-                    //    lastname: "required",
-                    //    username: {
-                    //        required: true,
-                    //        minlength: 2
-                    //    },
-                    //    password: {
-                    //        required: true,
-                    //        minlength: 5
-                    //    },
-                    //    confirm_password: {
-                    //        required: true,
-                    //        minlength: 5,
-                    //        equalTo: "#password"
-                    //    },
-                    //    email: {
-                    //        required: true,
-                    //        email: true
-                    //    },
-                    //    agree: "required"
-                },
-                messages: {
-                    cpTitle: {
-                        required: "Please enter the title",
-                        maxlength: "The title cannot have more than 450 characters"
-                    },
-                    cpPatientName: {
-                        required: "Please enter the patient name",
-                        maxlength: "The patient name cannot have more than 450 characters"
-                    },
-                    cpUserName: {
-                        required: "Please enter the user name",
-                        maxlength: "The user name cannot have more than 450 characters"
-                    },
-                    //    lastname: "Please enter your lastname",
-                    //    username: {
-                    //        required: "Please enter a username",
-                    //        minlength: "Your username must consist of at least 2 characters"
-                    //    },
-                    //    password: {
-                    //        required: "Please provide a password",
-                    //        minlength: "Your password must be at least 5 characters long"
-                    //    },
-                    //    confirm_password: {
-                    //        required: "Please provide a password",
-                    //        minlength: "Your password must be at least 5 characters long",
-                    //        equalTo: "Please enter the same password as above"
-                    //    },
-                    //    email: "Please enter a valid email address",
-                    //    agree: "Please accept our policy"
-                },
-                errorElement: "em",
-                errorPlacement: function (error, element) {
-                    // Add the `help-block` class to the error element
-                    error.addClass("help-block");
-
-                    if (element.prop("type") === "checkbox") {
-                        error.insertAfter(element.parent("label"));
-                    } else {
-                        error.insertAfter(element);
-                    }
-                },
-                highlight: function (element, errorClass, validClass) {
-                    $(element).parents(".field").addClass("has-error").removeClass("has-success");
-                },
-                unhighlight: function (element, errorClass, validClass) {
-                    $(element).parents(".field").addClass("has-success").removeClass("has-error");
-                }
-            });
-        }
-
-        // Apply the validations rules and return true if form validates. false otherwise.
-        function isFormCarePlanDataValid() {
-            if (cpValidator) return cpValidator.form();
-            else return false;
-        }
-
         // Handle click event on Update form button
         function updateCarePlanClick() {
 
@@ -241,6 +147,8 @@
 
             setCarePlanFromForm(CarePlan)
 
+            // for simplicity just used the button text to know if i'm creating a 
+            // new care plan or updating an existing one
             if ($("#cpUpdateBtn").text().trim() == "Add") {
                 addCarePlan(CarePlan);
             }
